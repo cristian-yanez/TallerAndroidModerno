@@ -1,4 +1,4 @@
-package usm.pato.starwars;
+package usm.pato.countryapp;
 
 import org.junit.Test;
 

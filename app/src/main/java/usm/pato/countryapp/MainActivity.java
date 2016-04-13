@@ -1,4 +1,4 @@
-package usm.pato.starwars;
+package usm.pato.countryapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import usm.pato.starwars.api.StarWarsApi;
-import usm.pato.starwars.model.Country;
+import usm.pato.countryapp.api.CountryAppApi;
+import usm.pato.countryapp.model.Country;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,20 +24,22 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        StarWarsApi api = retrofit.create(StarWarsApi.class);
+        CountryAppApi api = retrofit.create(CountryAppApi.class);
 
-        api.getCountry().enqueue(new Callback<Country>() {
+        api.getCountry().enqueue(new Callback<Country[]>() {
             @Override
-            public void onResponse(Call<Country> call, Response<Country> response) {
+            public void onResponse(Call<Country[]> call, Response<Country[]> response) {
                 if(response.isSuccessful()){
-                    Country c = response.body();
-                    Log.d("taller", c.name);
+                    Country c[] = response.body();
+                    for (Country actualCountry: c) {
+                        Log.d("taller", actualCountry.getName()+" pertenece al continente "+actualCountry.getRegion());
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<Country> call, Throwable t) {
-
+            public void onFailure(Call<Country[]> call, Throwable t) {
+                Log.v("taller", "Error: "+t.getMessage());
             }
         });
     }
